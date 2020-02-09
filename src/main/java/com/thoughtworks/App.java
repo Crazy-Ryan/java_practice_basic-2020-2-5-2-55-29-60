@@ -2,6 +2,7 @@ package com.thoughtworks;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class App {
 
@@ -20,14 +21,21 @@ public class App {
      */
     public static String bestCharge(String selectedItems) {
         // 此处补全代码
-//    return selectedItems;
-
-//    return getItemIds()[0];
         double[] itemSubtotal = getItemSubtotal(getItemCount(selectedItems));
         double totalCost = sumArr(itemSubtotal);
-        System.out.println(totalCost);
+        String[] reachProm = reachPromCal(totalCost);
+        String[] halfProm = halfPromCal(totalCost, itemSubtotal);
         return getItemSubtotal(getItemCount(selectedItems)).toString();
     }
+
+//    /**
+//     * 在字符串数组中寻找特定字符串，并返回第一次出现位置的下标
+//     */
+//    public static int readProms(double[] itemSubtotal) {
+//        double totalCost = sumArr(itemSubtotal);
+//        String[] reachProm = reachPromCal(totalCost);
+//        String[] halfProm = halfPromCal(totalCost, itemSubtotal);
+//    }
 
     /**
      * 获取每个菜品依次的编号
@@ -86,6 +94,7 @@ public class App {
 //        System.out.println(Arrays.toString(itemSubtotal));
         return itemSubtotal;
     }
+
     /**
      * 按满30-6促销计算总价
      */
@@ -94,7 +103,8 @@ public class App {
         if (totalCost > 30) {
             reachPromTotal = totalCost - 6;
         }
-        String reachPromMsg = "满30减6元，省" + (totalCost - reachPromTotal) + "元\n";
+        String reachPromMsg = "满30减6元，省" + (int) (totalCost - reachPromTotal) + "元\n"
+                + "-----------------------------------\n";
         String[] reachProm = new String[2];
         reachProm[0] = String.valueOf(reachPromTotal);
         reachProm[1] = reachPromMsg;
@@ -102,8 +112,44 @@ public class App {
         System.out.println(Arrays.toString(reachProm));
         return reachProm;
     }
+
     /**
-     * 在字符串数组中寻找特定字符串，并返回第一次出现位置的下标
+     * 按指定菜品半价促销计算总价
+     */
+    public static String[] halfPromCal(double totalCost, double[] itemSubtotal) {
+        String[] itemNames = getItemNames();
+//        halfPromSubtotal = Arrays.copyOf(itemSubtotal)
+        String[] itemIds = getItemIds();
+        String[] halfPromIds = getHalfPriceIds();
+        ArrayList<String> halfPromNames = new ArrayList<>();
+        StringBuilder halfPromMsg = new StringBuilder();
+        halfPromMsg.append("指定菜品半价(");
+
+        for (String halfPromId : halfPromIds) {
+            int halfPromIdIndex = findFirstIndexOf(itemIds, halfPromId);
+            if (-1 != halfPromIdIndex) {
+                itemSubtotal[halfPromIdIndex] *= 0.5;
+                halfPromNames.add(itemNames[halfPromIdIndex]);
+            }
+        }
+        double halfPromTotal;
+        halfPromTotal = sumArr(itemSubtotal);
+        String[] halfNamesArr = new String[halfPromNames.size()];
+        halfPromMsg.append(joinStringArr((String[]) halfPromNames.toArray(halfNamesArr), ", "));
+        halfPromMsg.append(")，省");
+        halfPromMsg.append((int) (totalCost - halfPromTotal));
+        halfPromMsg.append("元\n");
+        halfPromMsg.append("-----------------------------------\n");
+        String[] halfProm = new String[2];
+        halfProm[0] = String.valueOf(halfPromTotal);
+        halfProm[1] = halfPromMsg.toString();
+
+        System.out.println(Arrays.toString(halfProm));
+        return halfProm;
+    }
+
+    /**
+     * 将字符串数组中寻找特定字符串，并返回第一次出现位置的下标
      */
     public static int findFirstIndexOf(String[] stringArr, String strToFind) {
         for (int index = 0; index < stringArr.length; index++) {
@@ -117,6 +163,20 @@ public class App {
     /**
      * 在字符串数组中寻找特定字符串，并返回第一次出现位置的下标
      */
+    public static String joinStringArr(String[] stringArr, String delimiter) {
+        StringBuilder joinedString = new StringBuilder();
+        for (int index = 0; index < stringArr.length; index++) {
+            joinedString.append(stringArr[index]);
+            if (index != stringArr.length - 1) {
+                joinedString.append(delimiter);
+            }
+        }
+        return joinedString.toString();
+    }
+
+    /**
+     * 在字符串数组中寻找特定字符串，并返回第一次出现位置的下标
+     */
     public static double sumArr(double[] arrToSum) {
         double sum = 0;
         for (double num : arrToSum) {
@@ -124,6 +184,21 @@ public class App {
         }
         return sum;
     }
+
+    /**
+     * 在双精度浮点数组中寻找最小元素的下标
+     */
+    public static int findMinNumIndex(double[] numArr) {
+        int minNumIndex = 0;
+        for (int index = 0; index < numArr.length; index++) {
+            if (numArr[index] < numArr[minNumIndex]) {
+                minNumIndex = index;
+            }
+            ;
+        }
+        return minNumIndex;
+    }
+
 }
 
 
