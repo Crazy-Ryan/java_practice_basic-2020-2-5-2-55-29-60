@@ -34,6 +34,7 @@ public class App {
         double totalCost = sumArr(itemSubtotal);
         String[] noProm = new String[2];
         noProm[0] = String.valueOf(totalCost);
+        noProm[1] = "";
         String[] reachProm = reachPromCal(totalCost);
         String[] halfProm = halfPromCal(totalCost, itemSubtotal);
         double[] costArr = new double[3];
