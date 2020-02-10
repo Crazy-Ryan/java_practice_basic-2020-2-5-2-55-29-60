@@ -21,21 +21,39 @@ public class App {
      */
     public static String bestCharge(String selectedItems) {
         // 此处补全代码
-        double[] itemSubtotal = getItemSubtotal(getItemCount(selectedItems));
-        double totalCost = sumArr(itemSubtotal);
-        String[] reachProm = reachPromCal(totalCost);
-        String[] halfProm = halfPromCal(totalCost, itemSubtotal);
+        int[] itemCount = getItemCount(selectedItems);
+        double[] itemSubtotal = getItemSubtotal(itemCount);
+        String[] promMsg = readProms(itemSubtotal);
+        System.out.println(Arrays.toString(promMsg));
         return getItemSubtotal(getItemCount(selectedItems)).toString();
     }
 
-//    /**
-//     * 在字符串数组中寻找特定字符串，并返回第一次出现位置的下标
-//     */
-//    public static int readProms(double[] itemSubtotal) {
-//        double totalCost = sumArr(itemSubtotal);
-//        String[] reachProm = reachPromCal(totalCost);
-//        String[] halfProm = halfPromCal(totalCost, itemSubtotal);
-//    }
+    /**
+     * 读取优惠列表，寻找最佳优惠
+     */
+    public static String[] readProms(double[] itemSubtotal) {
+        double totalCost = sumArr(itemSubtotal);
+        String[] noProm = new String[2];
+        noProm[0] = String.valueOf(totalCost);
+        String[] reachProm = reachPromCal(totalCost);
+        String[] halfProm = halfPromCal(totalCost, itemSubtotal);
+        double[] costArr = new double[3];
+        costArr[0] = totalCost;
+        costArr[1] = Double.parseDouble(reachProm[0]);
+        costArr[2] = Double.parseDouble(halfProm[0]);
+        int lowestIndex = findMinNumIndex(costArr);
+        switch (lowestIndex) {
+            case 0:
+                return noProm;
+            case 1:
+                return reachProm;
+            case 2:
+                return halfProm;
+            default:
+        }
+        return noProm;
+    }
+
 
     /**
      * 获取每个菜品依次的编号
@@ -118,7 +136,7 @@ public class App {
      */
     public static String[] halfPromCal(double totalCost, double[] itemSubtotal) {
         String[] itemNames = getItemNames();
-//        halfPromSubtotal = Arrays.copyOf(itemSubtotal)
+        double[] halfPromSubtotal = Arrays.copyOf(itemSubtotal,itemSubtotal.length);
         String[] itemIds = getItemIds();
         String[] halfPromIds = getHalfPriceIds();
         ArrayList<String> halfPromNames = new ArrayList<>();
@@ -128,14 +146,13 @@ public class App {
         for (String halfPromId : halfPromIds) {
             int halfPromIdIndex = findFirstIndexOf(itemIds, halfPromId);
             if (-1 != halfPromIdIndex) {
-                itemSubtotal[halfPromIdIndex] *= 0.5;
+                halfPromSubtotal[halfPromIdIndex] *= 0.5;
                 halfPromNames.add(itemNames[halfPromIdIndex]);
             }
         }
-        double halfPromTotal;
-        halfPromTotal = sumArr(itemSubtotal);
+        double halfPromTotal = sumArr(halfPromSubtotal);
         String[] halfNamesArr = new String[halfPromNames.size()];
-        halfPromMsg.append(joinStringArr((String[]) halfPromNames.toArray(halfNamesArr), ", "));
+        halfPromMsg.append(joinStringArr(halfPromNames.toArray(halfNamesArr), ", "));
         halfPromMsg.append(")，省");
         halfPromMsg.append((int) (totalCost - halfPromTotal));
         halfPromMsg.append("元\n");
@@ -161,7 +178,7 @@ public class App {
     }
 
     /**
-     * 在字符串数组中寻找特定字符串，并返回第一次出现位置的下标
+     * 采用指定分隔符，将字符串数组合并成字符串
      */
     public static String joinStringArr(String[] stringArr, String delimiter) {
         StringBuilder joinedString = new StringBuilder();
@@ -175,7 +192,7 @@ public class App {
     }
 
     /**
-     * 在字符串数组中寻找特定字符串，并返回第一次出现位置的下标
+     * 将双精度浮点数加和
      */
     public static double sumArr(double[] arrToSum) {
         double sum = 0;
@@ -194,7 +211,6 @@ public class App {
             if (numArr[index] < numArr[minNumIndex]) {
                 minNumIndex = index;
             }
-            ;
         }
         return minNumIndex;
     }
