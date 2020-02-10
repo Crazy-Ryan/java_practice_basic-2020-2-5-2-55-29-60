@@ -62,7 +62,8 @@ public class App {
         String[] itemNames = getItemNames();
         for (int index = 0; index < itemCount.length; index++) {
             if (0 != itemCount[index]) {
-                output.append(itemNames[index]).append(" x ").append(itemCount[index]).append(" = ").append((int) itemSubtotal[index]).append("元\n");
+                output.append(itemNames[index]).append(" x ").append(itemCount[index]).append(" = ")
+                        .append((int) itemSubtotal[index]).append("元\n");
             }
         }
         output.append("-----------------------------------\n");
@@ -113,7 +114,6 @@ public class App {
             String[] itemIdAndCount = selectedItem.split(" x ");
             itemCount[findFirstIndexOf(itemIds, itemIdAndCount[0])] = Integer.parseInt(itemIdAndCount[1]);
         }
-//    System.out.println(Arrays.toString(itemCount));
         return itemCount;
     }
 
@@ -127,7 +127,6 @@ public class App {
         for (int index = 0; index < itemNum; index++) {
             itemSubtotal[index] = itemCount[index] * itemPrices[index];
         }
-//        System.out.println(Arrays.toString(itemSubtotal));
         return itemSubtotal;
     }
 
@@ -139,12 +138,13 @@ public class App {
         if (totalCost > 30) {
             reachPromTotal = totalCost - 6;
         }
-        String reachPromMsg = "使用优惠:\n"
-                +"满30减6元，省" + (int) (totalCost - reachPromTotal) + "元\n"
-                + "-----------------------------------\n";
+        StringBuilder reachPromMsg = new StringBuilder();
+        reachPromMsg.append("使用优惠:\n");
+        reachPromMsg.append("满30减6元，省").append((int) (totalCost - reachPromTotal)).append("元\n");
+        reachPromMsg.append("-----------------------------------\n");
         String[] reachProm = new String[2];
         reachProm[0] = String.valueOf(reachPromTotal);
-        reachProm[1] = reachPromMsg;
+        reachProm[1] = reachPromMsg.toString();
         return reachProm;
     }
 
@@ -157,9 +157,7 @@ public class App {
         String[] itemIds = getItemIds();
         String[] halfPromIds = getHalfPriceIds();
         ArrayList<String> halfPromNames = new ArrayList<>();
-        StringBuilder halfPromMsg = new StringBuilder();
-        halfPromMsg.append("使用优惠:\n");
-        halfPromMsg.append("指定菜品半价(");
+
         for (String halfPromId : halfPromIds) {
             int halfPromIdIndex = findFirstIndexOf(itemIds, halfPromId);
             if (-1 != halfPromIdIndex) {
@@ -169,13 +167,14 @@ public class App {
         }
         double halfPromTotal = sumArr(halfPromSubtotal);
         String[] halfNamesArr = new String[halfPromNames.size()];
-        halfPromMsg.append(joinStringArr(halfPromNames.toArray(halfNamesArr), "，"));
+        StringBuilder halfPromMsg = new StringBuilder();
+        halfPromMsg.append("使用优惠:\n");
+        halfPromMsg.append("指定菜品半价(").append(joinStringArr(halfPromNames.toArray(halfNamesArr), "，"));
         halfPromMsg.append(")，省").append((int) (totalCost - halfPromTotal)).append("元\n");
         halfPromMsg.append("-----------------------------------\n");
         String[] halfProm = new String[2];
         halfProm[0] = String.valueOf(halfPromTotal);
         halfProm[1] = halfPromMsg.toString();
-
         return halfProm;
     }
 
