@@ -43,15 +43,14 @@ public class App {
         costArr[2] = Double.parseDouble(halfProm[0]);
         int lowestIndex = findMinNumIndex(costArr);
         switch (lowestIndex) {
-            case 0:
-                return noProm;
             case 1:
                 return reachProm;
             case 2:
                 return halfProm;
             default:
+                return noProm;
         }
-        return noProm;
+
     }
 
     /**
@@ -63,7 +62,7 @@ public class App {
         String[] itemNames = getItemNames();
         for (int index = 0; index < itemCount.length; index++) {
             if (0 != itemCount[index]) {
-                output.append(itemNames[index]).append(" x ").append(itemCount[index]).append(" = ")
+                    output.append(itemNames[index]).append(" x ").append(itemCount[index]).append(" = ")
                         .append((int) itemSubtotal[index]).append("元\n");
             }
         }
@@ -139,13 +138,12 @@ public class App {
         if (totalCost > 30) {
             reachPromTotal = totalCost - 6;
         }
-        StringBuilder reachPromMsg = new StringBuilder();
-        reachPromMsg.append("使用优惠:\n");
-        reachPromMsg.append("满30减6元，省").append((int) (totalCost - reachPromTotal)).append("元\n");
-        reachPromMsg.append("-----------------------------------\n");
         String[] reachProm = new String[2];
         reachProm[0] = String.valueOf(reachPromTotal);
-        reachProm[1] = reachPromMsg.toString();
+        String reachPromMsg = "使用优惠:\n" +
+                "满30减6元，省" + (int) (totalCost - reachPromTotal) + "元\n" +
+                "-----------------------------------\n";
+        reachProm[1] = reachPromMsg;
         return reachProm;
     }
 
@@ -168,14 +166,13 @@ public class App {
         }
         double halfPromTotal = sumArr(halfPromSubtotal);
         String[] halfNamesArr = new String[halfPromNames.size()];
-        StringBuilder halfPromMsg = new StringBuilder();
-        halfPromMsg.append("使用优惠:\n");
-        halfPromMsg.append("指定菜品半价(").append(joinStringArr(halfPromNames.toArray(halfNamesArr), "，"));
-        halfPromMsg.append(")，省").append((int) (totalCost - halfPromTotal)).append("元\n");
-        halfPromMsg.append("-----------------------------------\n");
         String[] halfProm = new String[2];
         halfProm[0] = String.valueOf(halfPromTotal);
-        halfProm[1] = halfPromMsg.toString();
+        String halfPromMsg = "使用优惠:\n" +
+                "指定菜品半价(" + joinStringArr(halfPromNames.toArray(halfNamesArr), "，") +
+                ")，省" + (int) (totalCost - halfPromTotal) + "元\n" +
+                "-----------------------------------\n";
+        halfProm[1] = halfPromMsg;
         return halfProm;
     }
 
@@ -217,7 +214,7 @@ public class App {
     }
 
     /**
-     * 在双精度浮点数组中寻找最小元素的下标
+     * 在双精度浮点数组中寻找最小元素的最小下标
      */
     public static int findMinNumIndex(double[] numArr) {
         int minNumIndex = 0;
