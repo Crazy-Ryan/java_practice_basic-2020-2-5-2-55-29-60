@@ -27,9 +27,6 @@ public class App {
         return printShoppingDetails(itemCount, itemSubtotal, promMsg);
     }
 
-    /**
-     * 读取优惠列表，寻找最佳优惠
-     */
     public static String[] selectProms(double[] itemSubtotal) {
         double totalCost = sumArr(itemSubtotal);
         String[] noProm = new String[2];
@@ -53,9 +50,6 @@ public class App {
 
     }
 
-    /**
-     * 打印汇总信息
-     */
     public static String printShoppingDetails(int[] itemCount, double[] itemSubtotal, String[] promMsg) {
         StringBuilder output = new StringBuilder();
         output.append("============= 订餐明细 =============\n");
@@ -102,9 +96,6 @@ public class App {
         return new String[]{"ITEM0001", "ITEM0022"};
     }
 
-    /**
-     * 获取每个菜品依次的数量
-     */
     public static int[] getItemCount(String selectedItems) {
         String[] itemIds = getItemIds();
         int itemNum = itemIds.length;
@@ -117,9 +108,6 @@ public class App {
         return itemCount;
     }
 
-    /**
-     * 获取每个菜品依次的小计
-     */
     public static double[] getItemSubtotal(int[] itemCount) {
         double[] itemPrices = getItemPrices();
         int itemNum = itemPrices.length;
@@ -130,9 +118,6 @@ public class App {
         return itemSubtotal;
     }
 
-    /**
-     * 按满30-6促销计算总价
-     */
     public static String[] reachPromCal(double totalCost) {
         double reachPromTotal = totalCost;
         if (totalCost > 30) {
@@ -147,9 +132,6 @@ public class App {
         return reachProm;
     }
 
-    /**
-     * 按指定菜品半价促销计算总价
-     */
     public static String[] halfPromCal(double totalCost, double[] itemSubtotal) {
         String[] itemNames = getItemNames();
         double[] halfPromSubtotal = Arrays.copyOf(itemSubtotal, itemSubtotal.length);
@@ -176,9 +158,6 @@ public class App {
         return halfProm;
     }
 
-    /**
-     * 将字符串数组中寻找特定字符串，并返回第一次出现位置的下标
-     */
     public static int findFirstIndexOf(String[] stringArr, String strToFind) {
         for (int index = 0; index < stringArr.length; index++) {
             if (strToFind.equals(stringArr[index])) {
@@ -188,9 +167,6 @@ public class App {
         return -1;
     }
 
-    /**
-     * 采用指定分隔符，将字符串数组合并成字符串
-     */
     public static String joinStringArr(String[] stringArr, String delimiter) {
         StringBuilder joinedString = new StringBuilder();
         for (int index = 0; index < stringArr.length; index++) {
@@ -202,9 +178,6 @@ public class App {
         return joinedString.toString();
     }
 
-    /**
-     * 将双精度浮点数加和
-     */
     public static double sumArr(double[] arrToSum) {
         double sum = 0;
         for (double num : arrToSum) {
@@ -213,9 +186,6 @@ public class App {
         return sum;
     }
 
-    /**
-     * 在双精度浮点数组中寻找最小元素的最小下标
-     */
     public static int findMinNumIndex(double[] numArr) {
         int minNumIndex = 0;
         for (int index = 0; index < numArr.length; index++) {
