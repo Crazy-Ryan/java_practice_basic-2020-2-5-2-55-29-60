@@ -23,14 +23,14 @@ public class App {
         // 此处补全代码
         int[] itemCount = getItemCount(selectedItems);
         double[] itemSubtotal = getItemSubtotal(itemCount);
-        String[] promMsg = readProms(itemSubtotal);
+        String[] promMsg = selectProms(itemSubtotal);
         return printShoppingDetails(itemCount, itemSubtotal, promMsg);
     }
 
     /**
      * 读取优惠列表，寻找最佳优惠
      */
-    public static String[] readProms(double[] itemSubtotal) {
+    public static String[] selectProms(double[] itemSubtotal) {
         double totalCost = sumArr(itemSubtotal);
         String[] noProm = new String[2];
         noProm[0] = String.valueOf(totalCost);
